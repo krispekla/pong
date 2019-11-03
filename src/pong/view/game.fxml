@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<!--<AnchorPane id="AnchorPane" prefHeight="720" prefWidth="1280" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="pong.controller.GameController">-->
+<!--    <children>-->
+<!--    </children>-->
+<!--</AnchorPane>-->
+
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pong.controller.GameController">
+
+<GridPane fx:id="gameGrid" alignment="CENTER" gridLinesVisible="true"  prefHeight="720" prefWidth="1280" >
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>
+<Circle fx:id="ball" />
+</AnchorPane>
