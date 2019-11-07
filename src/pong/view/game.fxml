@@ -17,5 +17,4 @@
       <RowConstraints />
    </rowConstraints>
 </GridPane>
-<Circle fx:id="ball" />
 </AnchorPane>

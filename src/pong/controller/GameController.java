@@ -1,5 +1,7 @@
 package pong.controller;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,16 +14,25 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
+import pong.model.Point;
+import pong.utils.Util;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static pong.utils.Util.fillDirections;
+
 public class GameController implements Initializable {
+    Timeline loop;
+
     private static final int SIZE = 23;
-//    private static final int[][] DIRECTIONS = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]];
+    private static ArrayList<Point> DIRECTIONS;
     private static final byte BALL_DIRECTION = -1;
     private static int[][] gridFields = new int[SIZE][SIZE];
+    private static Point _BALL;
+    private static Point DIRECTION;
     @FXML
     public GridPane gameGrid;
     @FXML
@@ -44,9 +55,18 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setBoardFields();
         boardRender();
+
+        loop = new Timeline();
+        loop.setCycleCount(Timeline.INDEFINITE);
+        loop.setAutoReverse(false);
+        final KeyFrame kf = new KeyFrame(Duration.millis(200), (evt -> nextTick()));
+        loop.getKeyFrames().add(kf);
+        loop.play();
+
     }
 
     private void setBoardFields() {
+
         //Filling Start values
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -67,7 +87,10 @@ public class GameController implements Initializable {
             }
         }
 
+        _BALL = new Point(18, 16);
         gridFields[18][16] = 99;
+        DIRECTIONS = fillDirections();
+        DIRECTION = new Point();
 
         //Adding GRID Cols and Rows
         for (int i = 0; i < SIZE; i++) {
@@ -83,7 +106,9 @@ public class GameController implements Initializable {
         }
     }
 
+
     public void boardRender() {
+        gameGrid.getChildren().clear();
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 switch (gridFields[i][j]) {
@@ -104,6 +129,7 @@ public class GameController implements Initializable {
                         gameGrid.add(player, j, i);
                         break;
                     case 99:
+                        Circle ball = new Circle();
                         ball.setCenterX(50.0f);
                         ball.setCenterY(50.0f);
                         ball.setRadius(12.0f);
@@ -118,7 +144,23 @@ public class GameController implements Initializable {
     }
 
     private void nextTick() {
+        calculateNextMove();
+        boardRender();
+    }
 
+    private void calculateNextMove() {
+        int tempX;
+        int tempY;
+
+
+        tempX = _BALL.getX() - 1;
+        tempY = _BALL.getY();
+
+        gridFields[_BALL.getX()][_BALL.getY()] = 0;
+
+        gridFields[tempX][tempY] = 99;
+        _BALL.setX(tempX);
+        _BALL.setY(tempY);
     }
 
     @FXML
